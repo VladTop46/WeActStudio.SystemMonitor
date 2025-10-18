@@ -42,7 +42,11 @@ class Cpu(sensors.Cpu):
     @staticmethod
     def percentage(interval: float) -> float:
         return PERCENTAGE_SENSOR_VALUE
-
+    
+    @staticmethod
+    def power() -> float:
+        return PERCENTAGE_SENSOR_VALUE
+    
     @staticmethod
     def frequency() -> float:
         return CPU_FREQ_MHZ
@@ -129,6 +133,10 @@ class Disk(sensors.Disk):
     @staticmethod
     def disk_free() -> int:  # In bytes
         return int(DISK_TOTAL_SIZE_GB / 100 * (100 - PERCENTAGE_SENSOR_VALUE)) * 1000000000
+    
+    @staticmethod
+    def disk_used_free_and_usage_percent() -> tuple[int,int,float]:  # In bytes
+        return int(DISK_TOTAL_SIZE_GB / 100 * PERCENTAGE_SENSOR_VALUE) * 1000000000, int(DISK_TOTAL_SIZE_GB / 100 * (100 - PERCENTAGE_SENSOR_VALUE)) * 1000000000, PERCENTAGE_SENSOR_VALUE
 
 
 class Net(sensors.Net):

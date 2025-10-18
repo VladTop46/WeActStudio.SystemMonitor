@@ -246,6 +246,23 @@ class theme_editor:
         self.main.protocol("WM_DELETE_WINDOW", self.on_closing)
         self.main.resizable(False, False)
 
+        style = ttk.Style()
+        self.theme_is_dark = False
+        if platform.system() == "Windows" and sys.getwindowsversion().major >= 10:
+            import darkdetect
+            self.theme_is_dark = darkdetect.theme() == "Dark"
+            if self.theme_is_dark:
+                self.main.tk.call("source", Path(__file__).parent / "res" / "tk_themes" / "sv_ttk" / "theme" / "dark.tcl")
+                style.theme_use("sun-valley-dark")
+            else:
+                self.main.tk.call("source", Path(__file__).parent / "res" / "tk_themes" / "sv_ttk" / "theme" / "light.tcl")
+                style.theme_use("sun-valley-light")
+        else:
+            self.main.tk.call("source", Path(__file__).parent / "res" / "tk_themes" / "sv_ttk" / "theme" / "light.tcl")
+            style.theme_use("sun-valley-light")
+        utils.apply_theme_to_titlebar(self.main,self.theme_is_dark)
+        self.main.update()
+
         self.viewer = tkinter.Frame(self.main)
         self.viewer.config(cursor="cross")
         # Display RGB backplate LEDs color as background color
@@ -323,35 +340,35 @@ class theme_editor:
             x=self.image_width + 3 * self.RGB_LED_MARGIN,
             y=0,
             width=600,
-            height=30,
+            height=40,
         )
         button = ttk.Button(
             self.file_frame,
             text=_("Save to file"),
             command=self.on_file_save_button_press,
         )
-        button.pack(side="left")
+        button.pack(side="left", padx=5, pady=5)
 
         button_image = ttk.Button(
             self.file_frame,
             text=_("Image Scaler"),
             command=self.on_file_image_scaler_button_press,
         )
-        button_image.pack(side="left")
+        button_image.pack(side="left", padx=5, pady=5)
 
         button_image = ttk.Button(
             self.file_frame,
             text=_("GIF Scaler"),
             command=self.on_file_gif_scaler_button_press,
         )
-        button_image.pack(side="left")
+        button_image.pack(side="left", padx=5, pady=5)
 
         button_open_theme_dir = ttk.Button(
             self.file_frame,
             text=_("Theme Dir"),
             command=self.on_file_open_theme_dir_button_press,
         )
-        button_open_theme_dir.pack(side="left")
+        button_open_theme_dir.pack(side="left", padx=5, pady=5)
 
     def on_file_save_button_press(self):
         self.logger.info("Start Save THEME_DATA_EDIT To File")
@@ -414,7 +431,7 @@ class theme_editor:
         self.log_text.bind("<Button-3>", show_popup)
 
         self.log_text.tag_config("error", foreground="red")
-        self.log_text.tag_config("normal", foreground="black")
+        self.log_text.tag_config("normal", foreground="black" if not self.theme_is_dark else "white")
 
         self.logger_normal_message("Start System Monitor Theme Editor")
 
@@ -467,12 +484,12 @@ class theme_editor:
 
         self.theme.place(
             x=self.image_width + 3 * self.RGB_LED_MARGIN,
-            y=25 + self.RGB_LED_MARGIN,
+            y=28 + self.RGB_LED_MARGIN,
             width=600,
             height=self.image_height
             + 2 * self.RGB_LED_MARGIN
             - 50
-            - (25 + self.RGB_LED_MARGIN),
+            - (28 + self.RGB_LED_MARGIN),
         )
 
     def theme_tree_add_data(self, node, data):
@@ -823,12 +840,12 @@ class theme_editor:
         label_top = tkinter.Label(
             self.editor, text=_("Waiting selection"), font=("Arial", 12, "bold")
         )
-        label_top.grid(row=0, column=0, columnspan=10, sticky="w")
+        label_top.grid(row=0, column=0, columnspan=10, sticky="w", padx=5, pady=5)
 
         if text_show != None:
             label_tips = ttk.Label(self.editor, text="")
             label_tips["text"] = text_show
-            label_tips.grid(row=1, column=0, columnspan=10, sticky="w")
+            label_tips.grid(row=1, column=0, columnspan=10, sticky="w", padx=5, pady=5)
 
         self.editor.place(
             x=self.image_width + 3 * self.RGB_LED_MARGIN,
@@ -854,15 +871,15 @@ class theme_editor:
         title_label = ttk.Label(
             self.editor, text=title + _(" Editor"), font=("Arial", 12, "bold")
         )
-        title_label.place(x=0, y=0)
+        title_label.place(x=5, y=5)
 
         # Create a tips label
         tips_label = ttk.Label(self.editor, text="")
         tips_label["text"] = _("Please input")
-        tips_label.place(x=0, y=30)
+        tips_label.place(x=5, y=30)
 
         # Define the position of input controls
-        setting_x = 0
+        setting_x = 5
         setting_y = 60
         confirm_x = 475
         confirm_y = 58
@@ -890,7 +907,7 @@ class theme_editor:
             combobox = ttk.Combobox(self.editor, state="readonly" if title != "FORMAT" else None)
             combobox["value"] = combobox_list
             combobox.current(combobox_select)
-            combobox.place(x=setting_x, y=setting_y, width=470)
+            combobox.place(x=setting_x, y=setting_y, width=465)
 
             # Update tips information
             tips_label["text"] = _("Please Select")
@@ -923,7 +940,7 @@ class theme_editor:
                 # Create an entry box
                 entry = utils.EnhancedEntry(self.editor,label_text=self.entry_label_text,restrict_digit=True)
                 # entry.bind("<Key>", restrict_entry)
-                entry.place(x=setting_x, y=setting_y, width=470)
+                entry.place(x=setting_x, y=setting_y, width=465)
                 entry.insert(0, str(value))
                 entry.focus_set()
             elif isinstance(value, str):
@@ -952,7 +969,7 @@ class theme_editor:
                     combobox = ttk.Combobox(self.editor, state="readonly")
                     combobox["value"] = combobox_list
                     combobox.current(combobox_select)
-                    combobox.place(x=setting_x, y=setting_y, width=470)
+                    combobox.place(x=setting_x, y=setting_y, width=465)
                 elif is_color_chooser:
                     # Parse color value
                     color_values = [int(x) for x in value.split(", ")]
@@ -973,7 +990,7 @@ class theme_editor:
                 else:
                     # Create an entry box
                     entry = utils.EnhancedEntry(self.editor,label_text=self.entry_label_text)
-                    entry.place(x=setting_x, y=setting_y, width=470)
+                    entry.place(x=setting_x, y=setting_y, width=465)
                     entry.insert(0, value)
                     entry.focus_set()
 
@@ -1046,10 +1063,10 @@ class theme_editor:
         label = ttk.Label(
             self.editor, text=_("Name Editor"), font=("Arial", 12, "bold")
         )
-        label.grid(row=0, column=0, columnspan=10, sticky="w")
+        label.grid(row=0, column=0, columnspan=10, sticky="w", padx=5, pady=5)
 
         entry = utils.EnhancedEntry(self.editor,label_text=self.entry_label_text,restrict_alnum=True, width=25)
-        entry.grid(row=1, column=0, columnspan=10, sticky="w" + "e")
+        entry.grid(row=1, column=0, columnspan=10, sticky="w" + "e", padx=5, pady=5)
         entry.insert(0, title)
         entry.focus_set()
 
@@ -1185,12 +1202,12 @@ class theme_editor:
 
         self.theme.place(
             x=self.image_width + 3 * self.RGB_LED_MARGIN,
-            y=25 + self.RGB_LED_MARGIN,
+            y=28 + self.RGB_LED_MARGIN,
             width=600,
             height=self.image_height
             + 2 * self.RGB_LED_MARGIN
             - 50
-            - (25 + self.RGB_LED_MARGIN)
+            - (28 + self.RGB_LED_MARGIN)
             + 100,
         )
 
@@ -1205,7 +1222,7 @@ class theme_editor:
             x=self.image_width + 3 * self.RGB_LED_MARGIN,
             y=0,
             width=600,
-            height=30,
+            height=40,
         )
 
         self.logger_frame.place(
@@ -1308,6 +1325,9 @@ class theme_editor:
                 if config.THEME_DATA["STATS"]["CPU"]["PERCENTAGE"].get("INTERVAL", 0) > 0:
                     error_text = "CPU percentage"
                     stats.CPU.percentage(True)
+                if config.THEME_DATA["STATS"]["CPU"]["POWER"].get("INTERVAL", 0) > 0:
+                    error_text = "CPU power"
+                    stats.CPU.power(True)
                 if config.THEME_DATA["STATS"]["CPU"]["FREQUENCY"].get("INTERVAL", 0) > 0:
                     error_text = "CPU frequency"
                     stats.CPU.frequency(True)

@@ -257,7 +257,7 @@ class ConfigWindow:
 
         self.window = tkinter.Tk()
         self.window.title(_("WeAct Studio System Monitor Configuration") + " " + utils.get_version())
-        
+        self.window.iconphoto(True, tkinter.PhotoImage(file=Path(__file__).parent / "res" / "icons" / "logo.png"))
         style = ttk.Style()
 
         self.theme_is_dark = False
@@ -273,6 +273,9 @@ class ConfigWindow:
         else:
             self.window.tk.call("source", Path(__file__).parent / "res" / "tk_themes" / "sv_ttk" / "theme" / "light.tcl")
             style.theme_use("sun-valley-light")
+
+        apply_theme_to_titlebar(self.window,self.theme_is_dark)
+        self.window.update()
 
         self.entry_label_text = {}
         self.entry_label_text['Copy'] = _('Copy')
@@ -551,7 +554,6 @@ class ConfigWindow:
         self.window.after(0, self.on_fan_speed_update)
         self.window.resizable(False, False)
         self.window.protocol("WM_DELETE_WINDOW", self.on_closing)
-        self.window.iconphoto(True, tkinter.PhotoImage(file=Path(__file__).parent / "res" / "icons" / "logo.png"))
         
         apply_theme_to_titlebar(self.window,self.theme_is_dark)
 

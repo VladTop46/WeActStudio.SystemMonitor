@@ -31,6 +31,11 @@ class Cpu(ABC):
 
     @staticmethod
     @abstractmethod
+    def power() -> float:
+        pass
+
+    @staticmethod
+    @abstractmethod
     def frequency() -> float:
         pass
 
@@ -129,6 +134,11 @@ class Disk(ABC):
     @staticmethod
     @abstractmethod
     def disk_free() -> int:  # In bytes
+        pass
+
+    @staticmethod
+    @abstractmethod
+    def disk_used_free_and_usage_percent() -> tuple[int,int,float]:  #
         pass
 
 

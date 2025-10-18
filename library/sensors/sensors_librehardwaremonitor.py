@@ -24,6 +24,8 @@ import ctypes
 import math
 import os
 import sys
+import subprocess
+import platform
 from statistics import mean
 from typing import Tuple
 
@@ -35,11 +37,17 @@ import library.sensors.sensors as sensors
 from library.log import logger
 
 # Import LibreHardwareMonitor dll to Python
-lhm_dll = os.getcwd() + '\\external\\LibreHardwareMonitor\\LibreHardwareMonitorLib.dll'
+if platform.architecture()[0] == '64bit':
+    lhm_dll = os.getcwd() + '\\external\\LibreHardwareMonitor_64\\LibreHardwareMonitorLib.dll'
+else:
+    lhm_dll = os.getcwd() + '\\external\\LibreHardwareMonitor_32\\LibreHardwareMonitorLib.dll'
 # noinspection PyUnresolvedReferences
 clr.AddReference(lhm_dll)
 # noinspection PyUnresolvedReferences
-clr.AddReference(os.getcwd() + '\\external\\LibreHardwareMonitor\\HidSharp.dll')
+if platform.architecture()[0] == '64bit':
+    clr.AddReference(os.getcwd() + '\\external\\LibreHardwareMonitor_64\\HidSharp.dll')
+else:
+    clr.AddReference(os.getcwd() + '\\external\\LibreHardwareMonitor_32\\HidSharp.dll')
 # noinspection PyUnresolvedReferences
 from LibreHardwareMonitor import Hardware
 
@@ -181,6 +189,17 @@ class Cpu(sensors.Cpu):
                 return float(sensor.Value)
 
         logger.error("CPU load cannot be read")
+        return -1
+    
+    @staticmethod
+    def power() -> float:
+        cpu = get_hw_and_update(Hardware.HardwareType.Cpu)
+        for sensor in cpu.Sensors:
+            if sensor.SensorType == Hardware.SensorType.Power and str(sensor.Name).startswith(
+                    "Package") and sensor.Value is not None:
+                return float(sensor.Value)
+
+        logger.error("CPU power cannot be read")
         return -1
 
     @staticmethod
@@ -504,12 +523,90 @@ class Disk(sensors.Disk):
     def disk_free() -> int:  # In bytes
         try:
             disks = psutil.disk_partitions(all=True)
-            usage = 0
+            free = 0
             for disk in disks:
-                usage = usage + psutil.disk_usage(disk.device).free
-            return usage
+                free = free + psutil.disk_usage(disk.device).free
+            return free
         except:
             return -1
+        
+    @staticmethod
+    def disk_used_free_and_usage_percent() -> tuple[int,int,float]:  # In bytes
+        def psutil_get_disk_used_free_and_usage_percent() -> tuple[int,int,float]:  # In bytes
+            try:
+                disks = psutil.disk_partitions(all=True)
+                usage = 0
+                free = 0
+                for disk in disks:
+                    disk_usage = psutil.disk_usage(disk.device)
+                    usage = usage + disk_usage.used
+                    free = free + disk_usage.free
+            except:
+                usage = -1
+                free = -1
+                
+            if usage == -1 or free == -1:
+                return -1,-1,-1
+            return usage,free,usage/(usage+free)*100
+        
+        try:
+            # use wmic to get disk size and free space
+            result = subprocess.run(['wmic', 'logicaldisk', 'get', 'size,freespace'], 
+                                capture_output=True, text=True, shell=True)
+            if result.returncode != 0:
+                print("wmic error:",result.stderr,",try powershell command")
+                powershell_cmd = 'Get-CimInstance -ClassName Win32_LogicalDisk | Select-Object Size,FreeSpace'
+                # PowerShell
+                result = subprocess.run([r'C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe', 
+                       '-Command', powershell_cmd], 
+                      capture_output=True, text=True, shell=True)
+                if result.returncode != 0:
+                    print("powershell error:",result.stderr,",return psutil data")
+                    return psutil_get_disk_used_free_and_usage_percent()
+                else:
+                    lines = result.stdout.strip().split('\n')
+                    total_used = 0
+                    total_free = 0
+                    for line in lines:
+                        line = line.strip()
+                        if line and 'Size' not in line and 'FreeSpace' not in line and line != '':
+                            parts = line.split()
+                            if len(parts) >= 2:
+                                try:
+                                    # get free space
+                                    free_space = int(parts[1])
+                                    total_free += free_space
+                                    # total size = total size - free space
+                                    size = int(parts[0])
+                                    total_used += size - free_space
+                                except ValueError:
+                                    continue
+                    return total_used,total_free,total_used/(total_used+total_free)*100
+            else:
+                lines = result.stdout.strip().split('\n')
+                total_used = 0
+                total_free = 0
+                
+                # jump the first line
+                for line in lines[1:]:
+                    line = line.strip()
+                    if line:
+                        parts = line.split()
+                        if len(parts) >= 2:
+                            try:
+                                # get free space
+                                free_space = int(parts[0])
+                                total_free += free_space
+                                # total size = total size - free space
+                                size = int(parts[1])
+                                total_used += size - free_space
+                            except ValueError:
+                                continue
+                                
+                return total_used,total_free,total_used/(total_used+total_free)*100
+        except:
+            return psutil_get_disk_used_free_and_usage_percent()
+            
     
     @staticmethod
     def disk_state(if_name=None)-> float:

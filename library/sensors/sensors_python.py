@@ -115,6 +115,10 @@ class Cpu(sensors.Cpu):
             return psutil.cpu_percent(interval=interval)
         except:
             return math.nan
+        
+    @staticmethod
+    def power() -> float:
+        return math.nan
 
     @staticmethod
     def frequency() -> float:
@@ -511,6 +515,23 @@ class Disk(sensors.Disk):
         except:
             return -1
 
+    @staticmethod
+    def disk_used_free_and_usage_percent() -> tuple[int,int,float]:  # In bytes
+        try:
+            disks = psutil.disk_partitions(all=True)
+            usage = 0
+            free = 0
+            for disk in disks:
+                disk_usage = psutil.disk_usage(disk.device)
+                usage = usage + disk_usage.used
+                free = free + disk_usage.free
+        except:
+            usage = -1
+            free = -1
+            
+        if usage == -1 or free == -1:
+            return -1,-1,-1
+        return usage,free,usage/(usage+free)*100
 
 class Net(sensors.Net):
     @staticmethod

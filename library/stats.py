@@ -180,7 +180,7 @@ def display_themed_radial_bar(theme_data, value, min_size=0, unit='', custom_tex
         angle_steps=theme_data.get("ANGLE_STEPS", 1),
         angle_sep=theme_data.get("ANGLE_SEP", 0),
         clockwise=theme_data.get("CLOCKWISE", False),
-        value=value,
+        value=float(value),
         bar_color=theme_data.get("BAR_COLOR", (0, 0, 0)),
         text=text,
         font=config.get_font_path(theme_data.get("FONT", None)),
@@ -256,6 +256,7 @@ def last_values_list(size: int) -> List[float]:
 
 class CPU:
     last_values_cpu_percentage = []
+    last_values_cpu_power = []
     last_values_cpu_temperature = []
     last_values_cpu_fan_speed = []
     last_values_cpu_frequency = []
@@ -284,6 +285,36 @@ class CPU:
         display_themed_line_graph(theme_data['LINE_GRAPH'], cls.last_values_cpu_percentage)
 
     @classmethod
+    def power(cls,forced_refresh = False):
+        theme_data = config.THEME_DATA['STATS']['CPU']['POWER']
+        cpu_power = sensors.Cpu.power()
+        if math.isnan(cpu_power):
+            cpu_power = 0
+
+        save_last_value(cpu_power, cls.last_values_cpu_power,
+                        theme_data['LINE_GRAPH'].get("HISTORY_SIZE", DEFAULT_HISTORY_SIZE))
+        
+        need_refresh = True
+        if math.isnan(cls.last_values_cpu_power[-2]) == False:
+            if int(cpu_power) == int(cls.last_values_cpu_power[-2]):
+                need_refresh = False
+        if need_refresh or forced_refresh:
+            display_themed_value(
+                theme_data=theme_data['TEXT'],
+                value=f'{cpu_power:.1f}',
+                unit="W",
+                min_size=4
+            )
+            display_themed_progress_bar(theme_data['GRAPH'], cpu_power)
+            display_themed_radial_bar(
+                theme_data=theme_data['RADIAL'],
+                value=f'{cpu_power:.1f}',
+                unit="W",
+                min_size=4
+            )
+        display_themed_line_graph(theme_data['LINE_GRAPH'], cls.last_values_cpu_power)
+
+    @classmethod
     def frequency(cls,forced_refresh = False):
         freq_ghz = sensors.Cpu.frequency() / 1000
         theme_data = config.THEME_DATA['STATS']['CPU']['FREQUENCY']
@@ -308,7 +339,7 @@ class CPU:
             display_themed_radial_bar(
                 theme_data=theme_data['RADIAL'],
                 value=f'{freq_ghz:.2f}',
-                unit=" GHz",
+                unit="GHz",
                 min_size=4
             )
         display_themed_line_graph(theme_data['LINE_GRAPH'], cls.last_values_cpu_frequency)
@@ -596,7 +627,7 @@ class Gpu:
                 theme_data=gpu_fps_radial_data,
                 value=int(fps),
                 min_size=4,
-                unit=" FPS"
+                unit="FPS"
             )
         display_themed_line_graph(gpu_fps_line_graph_data, cls.last_values_gpu_fps)
 
@@ -654,7 +685,7 @@ class Gpu:
             display_themed_radial_bar(
                 theme_data=gpu_freq_radial_data,
                 value=f'{freq_ghz:.2f}',
-                unit=" GHz",
+                unit="GHz",
                 min_size=4
             )
         display_themed_line_graph(gpu_freq_line_graph_data, cls.last_values_gpu_frequency)
@@ -785,23 +816,25 @@ class Disk:
     last_total = -1
     @classmethod
     def stats(cls,forced_refresh = False):
-        used = int(sensors.Disk.disk_used() / 1000000000)
-        free = int(sensors.Disk.disk_free() / 1000000000)
+        used,free,percent = sensors.Disk.disk_used_free_and_usage_percent()
+        used = int(used / (1024*1024*1024))
+        free = int(free / (1024*1024*1024))
+        usage_percent = percent
         total = free + used
 
         disk_theme_data = config.THEME_DATA['STATS']['DISK']
 
-        disk_usage_percent = sensors.Disk.disk_usage_percent()
-        save_last_value(disk_usage_percent, cls.last_values_disk_usage,
+        
+        save_last_value(usage_percent, cls.last_values_disk_usage,
                         disk_theme_data['USED']['LINE_GRAPH'].get("HISTORY_SIZE", DEFAULT_HISTORY_SIZE))
         need_refresh = True
         if math.isnan(cls.last_values_disk_usage[-2]) == False:
-            if int(disk_usage_percent) == int(cls.last_values_disk_usage[-2]):
+            if int(usage_percent) == int(cls.last_values_disk_usage[-2]):
                 need_refresh = False
         if need_refresh or forced_refresh:
-            display_themed_progress_bar(disk_theme_data['USED']['GRAPH'], disk_usage_percent)
-            display_themed_percent_radial_bar(disk_theme_data['USED']['RADIAL'], disk_usage_percent)
-            display_themed_percent_value(disk_theme_data['USED']['PERCENT_TEXT'], disk_usage_percent)
+            display_themed_progress_bar(disk_theme_data['USED']['GRAPH'], usage_percent)
+            display_themed_percent_radial_bar(disk_theme_data['USED']['RADIAL'], usage_percent)
+            display_themed_percent_value(disk_theme_data['USED']['PERCENT_TEXT'], usage_percent)
         display_themed_line_graph(disk_theme_data['USED']['LINE_GRAPH'], cls.last_values_disk_usage)
 
         if used != cls.last_used or forced_refresh:

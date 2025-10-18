@@ -91,6 +91,13 @@ def CPUPercentage():
     # logger.debug("Refresh CPU Percentage")
     stats.CPU.percentage()
 
+@async_job("CPU_Power")
+@schedule(timedelta(seconds=config.THEME_DATA['STATS']['CPU']['POWER'].get("INTERVAL", 0)).total_seconds())
+def CPUPower():
+    """ Refresh the CPU Power """
+    # logger.debug("Refresh CPU Power")
+    stats.CPU.power()
+
 
 @async_job("CPU_Frequency")
 @schedule(timedelta(seconds=config.THEME_DATA['STATS']['CPU']['FREQUENCY'].get("INTERVAL", 0)).total_seconds())

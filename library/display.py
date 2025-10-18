@@ -25,7 +25,6 @@ from library.lcd.lcd_comm_weact_a import LcdComm_WeAct_A
 from library.lcd.lcd_comm_weact_b import LcdComm_WeAct_B
 from library.lcd.lcd_simulated import LcdSimulated
 from library.log import logger
-from pathlib import Path
     
 def _get_theme_orientation() -> Orientation:
     if config.THEME_DATA["display"]["DISPLAY_ORIENTATION"] == 'portrait':

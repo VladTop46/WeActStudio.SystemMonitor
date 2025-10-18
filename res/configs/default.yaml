@@ -12,6 +12,16 @@ STATS:
         SHOW: False
       LINE_GRAPH:
         SHOW: False
+    POWER:
+      INTERVAL: 0
+      TEXT:
+        SHOW: False
+      GRAPH:
+        SHOW: False
+      RADIAL:
+        SHOW: False
+      LINE_GRAPH:
+        SHOW: False
     FREQUENCY:
       INTERVAL: 0
       TEXT:

@@ -69,6 +69,7 @@ def show_messagebox(message, title="", delay=3000):
         
         # Center the window on the screen
         root.withdraw()
+        apply_theme_to_titlebar(root,theme_is_dark)
         root.update_idletasks()
         screen_width = root.winfo_screenwidth()
         screen_height = root.winfo_screenheight()

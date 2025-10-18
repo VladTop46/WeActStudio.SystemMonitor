@@ -1,0 +1,1 @@
+@set "PATH=C:\Windows\System32;C:\Windows\System32\wbem;%~dp0\Python\Scripts;%~dp0\Python"

@@ -240,6 +240,8 @@ def scheduler_init():
 
     scheduler.CPUPercentage()
     time.sleep(0.15)
+    scheduler.CPUPower()
+    time.sleep(0.15)
     scheduler.CPUFrequency()
     time.sleep(0.15)
     scheduler.CPULoad()

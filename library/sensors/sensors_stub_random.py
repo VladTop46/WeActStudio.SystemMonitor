@@ -29,6 +29,10 @@ class Cpu(sensors.Cpu):
     @staticmethod
     def percentage(interval: float) -> float:
         return random.uniform(0, 100)
+    
+    @staticmethod
+    def power() -> float:
+        return random.uniform(0, 100)
 
     @staticmethod
     def frequency() -> float:
@@ -113,6 +117,10 @@ class Disk(sensors.Disk):
     @staticmethod
     def disk_free() -> int:  # In bytes
         return random.randint(1000000000, 2000000000000)
+    
+    @staticmethod
+    def disk_used_free_and_usage_percent() -> tuple[int,int,float]:  # In bytes
+        return random.randint(1000000000, 2000000000000), random.randint(1000000000, 2000000000000), random.uniform(0, 100)
 
 
 class Net(sensors.Net):
