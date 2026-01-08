@@ -64,6 +64,11 @@ class Gpu(ABC):
 
     @staticmethod
     @abstractmethod
+    def power() -> float:
+        pass
+    
+    @staticmethod
+    @abstractmethod
     def fps() -> int:
         pass
 

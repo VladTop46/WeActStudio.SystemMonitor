@@ -4,16 +4,17 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: PACKAGE VERSION\n"
+"Project-Id-Version: \n"
 "POT-Creation-Date: 2024-09-17 09:57+0800\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
-"Language-Team: LANGUAGE <LL@li.org>\n"
+"PO-Revision-Date: 2026-01-07 14:58+0800\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Language: en\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=cp936\n"
+"Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: pygettext.py 1.5\n"
-
+"X-Generator: Poedit 3.5\n"
 
 #: .\theme-editor.py:218
 msgid "WeAct Studio System Monitor Theme Editor"
@@ -103,22 +104,34 @@ msgstr ""
 msgid "Zone: X={}, Y={}, width={} height={}"
 msgstr ""
 
-msgid "You need to create a new folder called Photos \nand place your pictures in it."
+msgid ""
+"You need to create a new folder called Photos \n"
+"and place your pictures in it."
 msgstr ""
 
-msgid "If you want to add more image,\nchange the dynamic_x name first"
+msgid ""
+"If you want to add more image,\n"
+"change the dynamic_x name first"
 msgstr ""
 
-msgid "If you want to add more text,\nchange the dynamic_x name first"
+msgid ""
+"If you want to add more text,\n"
+"change the dynamic_x name first"
 msgstr ""
 
-msgid "If you want to add more text,\nchange the TEXT_EXAMPLE name first"
+msgid ""
+"If you want to add more text,\n"
+"change the TEXT_EXAMPLE name first"
 msgstr ""
 
-msgid "If you want to add more image,\nchange the IMAGE_EXAMPLE name first"
+msgid ""
+"If you want to add more image,\n"
+"change the IMAGE_EXAMPLE name first"
 msgstr ""
 
-msgid "If you want to add more requests_get,\nchange the get_xx name first"
+msgid ""
+"If you want to add more requests_get,\n"
+"change the get_xx name first"
 msgstr ""
 
 msgid "Theme dir"
@@ -146,22 +159,22 @@ msgid "display"
 msgstr ""
 
 msgid "DISPLAY_ORIENTATION"
-msgstr ""
+msgstr "display orientation"
 
 msgid "DISPLAY_RGB_LED"
-msgstr ""
+msgstr "display rgb led"
 
 msgid "static_images"
-msgstr ""
+msgstr "static images"
 
 msgid "PATH"
 msgstr ""
 
 msgid "BACKGROUND_COLOR"
-msgstr ""
+msgstr "background color"
 
 msgid "BACKGROUND_IMAGE"
-msgstr ""
+msgstr "background image"
 
 msgid "X"
 msgstr ""
@@ -170,193 +183,193 @@ msgid "Y"
 msgstr ""
 
 msgid "WIDTH"
-msgstr ""
+msgstr "width"
 
 msgid "HEIGHT"
-msgstr ""
+msgstr "height"
 
 msgid "COLOR"
-msgstr ""
+msgstr "color"
 
 msgid "RADIUS"
-msgstr ""
+msgstr "radius"
 
 msgid "ALPHA"
-msgstr ""
+msgstr "alpha"
 
 msgid "static_text"
-msgstr ""
+msgstr "static text"
 
 msgid "TEXT"
-msgstr ""
+msgstr "text"
 
 msgid "FONT"
-msgstr ""
+msgstr "font"
 
 msgid "FONT_SIZE"
-msgstr ""
+msgstr "font size"
 
 msgid "FONT_COLOR"
-msgstr ""
+msgstr "font color"
 
 msgid "ALIGN"
-msgstr ""
+msgstr "align"
 
 msgid "ANCHOR"
-msgstr ""
+msgstr "anchor"
 
 msgid "ROTATION"
-msgstr ""
+msgstr "rotation"
 
 msgid "dynamic_texts"
-msgstr ""
+msgstr "dynamic texts"
 
 msgid "SHOW"
-msgstr ""
+msgstr "show"
 
 msgid "INTERVAL_100mS"
-msgstr ""
+msgstr "interval 100ms"
 
 msgid "dynamic_images"
-msgstr ""
+msgstr "dynamic images"
 
 msgid "photo_album"
-msgstr ""
+msgstr "photo album"
 
 msgid "SHOW_RANDOM"
-msgstr ""
+msgstr "show random"
 
 msgid "AUTO_REFRESH"
-msgstr ""
+msgstr "auto refresh"
 
 msgid "INTERVAL"
-msgstr ""
+msgstr "interval"
 
 msgid "MAX_WIDTH"
-msgstr ""
+msgstr "max width"
 
 msgid "MAX_HEIGHT"
-msgstr ""
+msgstr "max height"
 
 msgid "requests_get"
-msgstr ""
+msgstr "requests get"
 
 msgid "GET_TYPE"
-msgstr ""
+msgstr "get type"
 
 msgid "OVERLAY_BG"
-msgstr ""
+msgstr "overlay bg"
 
 msgid "STATS"
-msgstr ""
+msgstr "stats"
 
 msgid "CPU"
 msgstr ""
 
 msgid "PERCENTAGE"
-msgstr ""
+msgstr "percentage"
 
 msgid "GRAPH"
-msgstr ""
+msgstr "bar graph"
 
 msgid "BAR_COLOR"
-msgstr ""
+msgstr "bar color"
 
 msgid "BAR_OUTLINE"
-msgstr ""
+msgstr "bar outline"
 
 msgid "MIN_VALUE"
-msgstr ""
+msgstr "min value"
 
 msgid "MAX_VALUE"
-msgstr ""
+msgstr "max value"
 
 msgid "RADIAL"
-msgstr ""
+msgstr "radial"
 
 msgid "ANGLE_START"
-msgstr ""
+msgstr "angle start"
 
 msgid "ANGLE_END"
-msgstr ""
+msgstr "angle end"
 
 msgid "ANGLE_STEPS"
-msgstr ""
+msgstr "angle steps"
 
 msgid "ANGLE_SEP"
-msgstr ""
+msgstr "angle sep"
 
 msgid "CLOCKWISE"
-msgstr ""
+msgstr "clockwise"
 
 msgid "LINE_GRAPH"
-msgstr ""
+msgstr "line graph"
 
 msgid "HISTORY_SIZE"
-msgstr ""
+msgstr "history size"
 
 msgid "AUTOSCALE"
-msgstr ""
+msgstr "autoscale"
 
 msgid "LINE_COLOR"
-msgstr ""
+msgstr "line color"
 
 msgid "LINE_WIDTH"
-msgstr ""
+msgstr "line width"
 
 msgid "AXIS"
-msgstr ""
+msgstr "axis"
 
 msgid "AXIS_COLOR"
-msgstr ""
+msgstr "axis color"
 
 msgid "AXIS_FONT"
-msgstr ""
+msgstr "axis font"
 
 msgid "AXIS_FONT_SIZE"
-msgstr ""
+msgstr "axis font size"
 
 msgid "POWER"
-msgstr ""
+msgstr "power"
 
 msgid "SHOW_UNIT"
-msgstr ""
+msgstr "sho unit"
 
 msgid "UNIT_ML"
-msgstr ""
+msgstr "Unit Line Break Display"
 
 msgid "MIN_SIZE"
-msgstr ""
+msgstr "min size"
 
 msgid "FREQUENCY"
-msgstr ""
+msgstr "frequency"
 
 msgid "LOAD"
-msgstr ""
+msgstr "load"
 
 msgid "TEMPERATURE"
-msgstr ""
+msgstr "temperature"
 
 msgid "FAN_SPEED"
-msgstr ""
+msgstr "fan speed"
 
 msgid "GPU"
 msgstr ""
 
 msgid "MEMORY_PERCENT"
-msgstr ""
+msgstr "memory percent"
 
 msgid "MEMORY_USED"
-msgstr ""
+msgstr "memory used"
 
 msgid "MEMORY_TOTAL"
-msgstr ""
+msgstr "memory total"
 
 msgid "FPS"
 msgstr ""
 
 msgid "MEMORY"
-msgstr ""
+msgstr "memory"
 
 msgid "SWAP"
 msgstr ""
@@ -365,79 +378,79 @@ msgid "VIRTUAL"
 msgstr ""
 
 msgid "USED"
-msgstr ""
+msgstr "used"
 
 msgid "FREE"
-msgstr ""
+msgstr "free"
 
 msgid "TOTAL"
-msgstr ""
+msgstr "total"
 
 msgid "DISK"
-msgstr ""
+msgstr "disk"
 
 msgid "NET"
-msgstr ""
+msgstr "network"
 
 msgid "UPLOAD"
-msgstr ""
+msgstr "upload"
 
 msgid "WLO"
-msgstr ""
+msgstr "WLAN"
 
 msgid "UPLOADED"
-msgstr ""
+msgstr "uploaded"
 
 msgid "DOWNLOAD"
-msgstr ""
+msgstr "download"
 
 msgid "DOWNLOADED"
-msgstr ""
+msgstr "downloaded"
 
 msgid "ETH"
-msgstr ""
+msgstr "ETH"
 
 msgid "DATE"
-msgstr ""
+msgstr "date"
 
 msgid "DAY"
-msgstr ""
+msgstr "day"
 
 msgid "HOUR"
-msgstr ""
+msgstr "hour"
 
 msgid "UPTIME"
-msgstr ""
+msgstr "uptime"
 
 msgid "SECONDS"
-msgstr ""
+msgstr "seconds"
 
 msgid "FORMATTED"
-msgstr ""
+msgstr "formatted"
 
 msgid "VOLUME"
-msgstr ""
+msgstr "volume"
 
 msgid "LCD_SENSOR"
-msgstr ""
+msgstr "lcd sensor"
 
 msgid "HUMIDNESS"
-msgstr ""
+msgstr "humidness"
 
 msgid "WEATHER"
-msgstr ""
+msgstr "weather"
 
 msgid "INPUT_MONITOR"
-msgstr ""
+msgstr "input monitor"
 
 msgid "MOUSE_CLICK_COUNT"
-msgstr ""
+msgstr "mouse click count"
 
 msgid "KEYBOARD_PRESS_COUNT"
-msgstr ""
+msgstr "keyboard press count"
 
 msgid "PERCENT_TEXT"
-msgstr ""
+msgstr "percent text"
 
 msgid "SHOW_TEXT"
-msgstr ""
+msgstr "show text"

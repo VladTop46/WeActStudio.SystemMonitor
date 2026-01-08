@@ -74,6 +74,15 @@ STATS:
         SHOW: False
       LINE_GRAPH:
         SHOW: False
+    POWER:
+      TEXT:
+        SHOW: False
+      GRAPH:
+        SHOW: False
+      RADIAL:
+        SHOW: False
+      LINE_GRAPH:
+        SHOW: False
     MEMORY_PERCENT:
       GRAPH:
         SHOW: False

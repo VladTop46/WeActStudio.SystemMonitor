@@ -59,6 +59,10 @@ class Gpu(sensors.Gpu):
                                                                                                                    90)
 
     @staticmethod
+    def power() -> float:
+        return random.uniform(0, 100)
+    
+    @staticmethod
     def fps() -> int:
         return random.randint(20, 120)
 

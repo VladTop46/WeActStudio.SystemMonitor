@@ -845,7 +845,7 @@ class theme_editor:
         if text_show != None:
             label_tips = ttk.Label(self.editor, text="")
             label_tips["text"] = text_show
-            label_tips.grid(row=1, column=0, columnspan=10, sticky="w", padx=5, pady=5)
+            label_tips.grid(row=1, column=0, columnspan=10, sticky="w", padx=10, pady=5)
 
         self.editor.place(
             x=self.image_width + 3 * self.RGB_LED_MARGIN,
@@ -869,7 +869,7 @@ class theme_editor:
 
         # Create a title label
         title_label = ttk.Label(
-            self.editor, text=title + _(" Editor"), font=("Arial", 12, "bold")
+            self.editor, text=_(title) + _(" Editor"), font=("Arial", 12, "bold")
         )
         title_label.place(x=5, y=5)
 
@@ -1140,19 +1140,19 @@ class theme_editor:
                                     self.theme_tree_selection, selection_item_text
                                 )
                             else:
-                                tip_show = None
+                                tip_show = _(selection_item_text) + '\n'
                                 if selection_item_text == "photo_album":
-                                    tip_show = _("You need to create a new folder called Photos \nand place your pictures in it.")
+                                    tip_show = tip_show + _("You need to create a new folder called Photos \nand place your pictures in it.")
                                 elif selection_item_text == "dynamic_images":
-                                    tip_show = _("If you want to add more image,\nchange the dynamic_x name first")
+                                    tip_show = tip_show + _("If you want to add more image,\nchange the dynamic_x name first")
                                 elif selection_item_text == "dynamic_texts":
-                                    tip_show = _("If you want to add more text,\nchange the dynamic_x name first")
+                                    tip_show = tip_show + _("If you want to add more text,\nchange the dynamic_x name first")
                                 elif selection_item_text == "static_text":
-                                    tip_show = _("If you want to add more text,\nchange the TEXT_EXAMPLE name first")
+                                    tip_show = tip_show + _("If you want to add more text,\nchange the TEXT_EXAMPLE name first")
                                 elif selection_item_text == "static_images":
-                                    tip_show = _("If you want to add more image,\nchange the IMAGE_EXAMPLE name first")
+                                    tip_show = tip_show + _("If you want to add more image,\nchange the IMAGE_EXAMPLE name first")
                                 elif selection_item_text == "requests_get":
-                                    tip_show = _("If you want to add more requests_get,\nchange the get_xx name first")
+                                    tip_show = tip_show + _("If you want to add more requests_get,\nchange the get_xx name first")
                                 self.editor_set_free(tip_show)
                         else:
                             self.editor_set_free()

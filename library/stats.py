@@ -303,14 +303,14 @@ class CPU:
                 theme_data=theme_data['TEXT'],
                 value=f'{cpu_power:.1f}',
                 unit="W",
-                min_size=4
+                min_size=5
             )
             display_themed_progress_bar(theme_data['GRAPH'], cpu_power)
             display_themed_radial_bar(
                 theme_data=theme_data['RADIAL'],
                 value=f'{cpu_power:.1f}',
                 unit="W",
-                min_size=4
+                min_size=5
             )
         display_themed_line_graph(theme_data['LINE_GRAPH'], cls.last_values_cpu_power)
 
@@ -434,6 +434,7 @@ class Gpu:
     last_values_gpu_fps = []
     last_values_gpu_fan_speed = []
     last_values_gpu_frequency = []
+    last_values_gpu_power = []
     last_memory_used_mb = -1
     last_total_memory_mb = -1
     @classmethod
@@ -689,6 +690,35 @@ class Gpu:
                 min_size=4
             )
         display_themed_line_graph(gpu_freq_line_graph_data, cls.last_values_gpu_frequency)
+
+        # GPU Power (W)
+        theme_data = theme_gpu_data['POWER']
+        gpu_power = sensors.Gpu.power()
+        if math.isnan(gpu_power):
+            gpu_power = 0
+
+        save_last_value(gpu_power, cls.last_values_gpu_power,
+                        theme_data['LINE_GRAPH'].get("HISTORY_SIZE", DEFAULT_HISTORY_SIZE))
+        
+        need_refresh = True
+        if math.isnan(cls.last_values_gpu_power[-2]) == False:
+            if int(gpu_power) == int(cls.last_values_gpu_power[-2]):
+                need_refresh = False
+        if need_refresh or forced_refresh:
+            display_themed_value(
+                theme_data=theme_data['TEXT'],
+                value=f'{gpu_power:.1f}',
+                unit="W",
+                min_size=5
+            )
+            display_themed_progress_bar(theme_data['GRAPH'], gpu_power)
+            display_themed_radial_bar(
+                theme_data=theme_data['RADIAL'],
+                value=f'{gpu_power:.1f}',
+                unit="W",
+                min_size=5
+            )
+        display_themed_line_graph(theme_data['LINE_GRAPH'], cls.last_values_gpu_power)
 
     @staticmethod
     def is_available():

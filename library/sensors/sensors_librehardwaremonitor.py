@@ -333,6 +333,23 @@ class Gpu(sensors.Gpu):
         return load, (used_mem / total_mem * 100.0), used_mem, total_mem, temp
 
     @classmethod
+    def power(cls) -> float:
+        gpu_to_use = cls.get_gpu_to_use()
+        if gpu_to_use is None:
+            # GPU not supported
+            return -1
+        
+        try:
+            for sensor in gpu_to_use.Sensors:
+                if sensor.SensorType == Hardware.SensorType.Power and str(sensor.Name).startswith(
+                    "GPU Package") and sensor.Value is not None:
+                    return float(sensor.Value)
+        except:
+            pass
+
+        return -1
+
+    @classmethod
     def fps(cls) -> int:
         gpu_to_use = cls.get_gpu_to_use()
         if gpu_to_use is None:

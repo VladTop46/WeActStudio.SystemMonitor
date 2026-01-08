@@ -188,6 +188,10 @@ class Gpu(sensors.Gpu):
             return math.nan, math.nan, math.nan, math.nan, math.nan
 
     @staticmethod
+    def power() -> float:
+        return math.nan
+    
+    @staticmethod
     def fps() -> int:
         global DETECTED_GPU
         if DETECTED_GPU == GpuType.AMD:
@@ -276,6 +280,10 @@ class GpuNvidia(sensors.Gpu):
 
         return load, memory_percentage, memory_used_mb, memory_total_mb, temperature
 
+    @staticmethod
+    def power() -> float:
+        return math.nan
+    
     @staticmethod
     def fps() -> int:
         # Not supported by Python libraries

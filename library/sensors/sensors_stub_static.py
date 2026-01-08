@@ -75,6 +75,10 @@ class Gpu(sensors.Gpu):
                 TEMPERATURE_SENSOR_VALUE)
 
     @staticmethod
+    def power() -> float:
+        return PERCENTAGE_SENSOR_VALUE
+    
+    @staticmethod
     def fps() -> int:
         return GPU_FPS
 
