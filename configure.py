@@ -98,6 +98,16 @@ def app_exit():
 from library.sensors.sensors_python import sensors_fans, is_cpu_fan
 from library.lcd.lcd_comm import Orientation
 
+def center_dialog(dialog, parent):
+    """Center a Toplevel dialog over parent window. Works on Linux and Windows."""
+    dialog.update_idletasks()  # ensure widgets are rendered and sizes are known
+    width = dialog.winfo_reqwidth()
+    height = dialog.winfo_reqheight()
+    x = parent.winfo_x() + (parent.winfo_width() // 2) - (width // 2)
+    y = parent.winfo_y() + (parent.winfo_height() // 2) - (height // 2)
+    dialog.geometry(f"{width}x{height}+{x}+{y}")
+    dialog.deiconify()
+
 WEACT_A_MODEL = "WeAct Studio Display FS V1"
 WEACT_B_MODEL = "WeAct Studio Display FS 0.96 Inch"
 SIMULATED_A_MODEL = "Simulated 320x480"
@@ -198,7 +208,7 @@ def get_com_ports():
     ]  # Add manual entry on top for automatic detection
     com_ports = comports()
     for com_port in com_ports:
-        com_ports_names.append(com_port.name)
+        com_ports_names.append(com_port.device)
     return com_ports_names
 
 
@@ -628,17 +638,7 @@ class ConfigWindow:
         )
         cancel_button.pack(side=tkinter.RIGHT, padx=5, pady=5)
 
-        self.closing_confirm_frame.update()
-        main_window_x = self.window.winfo_x()
-        main_window_y = self.window.winfo_y()
-        main_window_width = self.window.winfo_width()
-        main_window_height = self.window.winfo_height()
-        width = self.closing_confirm_frame.winfo_width()
-        height = self.closing_confirm_frame.winfo_height()
-        x = main_window_x + (main_window_width // 2) - (width // 2)
-        y = main_window_y + (main_window_height // 2) - (height // 2)
-        self.closing_confirm_frame.geometry(f"{width}x{height}+{x}+{y}")
-        self.closing_confirm_frame.deiconify()
+        center_dialog(self.closing_confirm_frame, self.window)
 
         self.closing_confirm_frame.focus_force()
 
@@ -850,8 +850,7 @@ class ConfigWindow:
                 theme_preview = Image.open(
                     Path(self.themes_dir_path) / self.theme_cb.get() / "preview.png"
                 )
-            except Exception as e:
-                traceback.print_exc()
+            except Exception:
                 theme_preview = Image.open(Path(__file__).parent / "res" / "configs" / "no-preview.png")
             finally:
                 # Set the fixed width for the preview image
@@ -1179,17 +1178,7 @@ class ConfigWindow:
         self.new_theme_editor_ok_button.pack(side=tkinter.RIGHT, padx=5, pady=10)
         self.new_theme_editor_ok_button.state(["disabled"])
 
-        self.new_theme_editor.update()
-        main_window_x = self.window.winfo_x()
-        main_window_y = self.window.winfo_y()
-        main_window_width = self.window.winfo_width()
-        main_window_height = self.window.winfo_height()
-        width = self.new_theme_editor.winfo_width()
-        height = self.new_theme_editor.winfo_height()
-        x = main_window_x + (main_window_width // 2) - (width // 2)
-        y = main_window_y + (main_window_height // 2) - (height // 2)
-        self.new_theme_editor.geometry(f"{width}x{height}+{x}+{y}")
-        self.new_theme_editor.deiconify()
+        center_dialog(self.new_theme_editor, self.window)
         self.new_theme_editor.focus_force()
 
         apply_theme_to_titlebar(self.new_theme_editor,self.theme_is_dark)
@@ -1361,17 +1350,7 @@ class ConfigWindow:
         )
         cancel_button.pack(side=tkinter.RIGHT, padx=5, pady=5)
 
-        self.delete_theme_frame.update()
-        main_window_x = self.window.winfo_x()
-        main_window_y = self.window.winfo_y()
-        main_window_width = self.window.winfo_width()
-        main_window_height = self.window.winfo_height()
-        width = self.delete_theme_frame.winfo_width()
-        height = self.delete_theme_frame.winfo_height()
-        x = main_window_x + (main_window_width // 2) - (width // 2)
-        y = main_window_y + (main_window_height // 2) - (height // 2)
-        self.delete_theme_frame.geometry(f"{width}x{height}+{x}+{y}")
-        self.delete_theme_frame.deiconify()
+        center_dialog(self.delete_theme_frame, self.window)
 
         self.delete_theme_frame.focus_force()
 
@@ -1456,17 +1435,7 @@ class ConfigWindow:
         self.copy_theme_editor_ok_button.pack(side=tkinter.RIGHT, padx=5, pady=10)
         self.copy_theme_editor_ok_button.state(["disabled"])
 
-        self.copy_theme_editor.update()
-        main_window_x = self.window.winfo_x()
-        main_window_y = self.window.winfo_y()
-        main_window_width = self.window.winfo_width()
-        main_window_height = self.window.winfo_height()
-        width = self.copy_theme_editor.winfo_width()
-        height = self.copy_theme_editor.winfo_height()
-        x = main_window_x + (main_window_width // 2) - (width // 2)
-        y = main_window_y + (main_window_height // 2) - (height // 2)
-        self.copy_theme_editor.geometry(f"{width}x{height}+{x}+{y}")
-        self.copy_theme_editor.deiconify()
+        center_dialog(self.copy_theme_editor, self.window)
 
         self.copy_theme_editor_entry.insert(0,self.theme_cb.get()+'_0')
         self.copy_theme_editor_entry_change()
@@ -1783,18 +1752,8 @@ class PingWeatherConfigWindow:
     def show(self):
         self.load_config_values(self.main_window.config)
         self.window.withdraw()
-        self.window.update()
-        main_window_x = self.main_window.window.winfo_x()
-        main_window_y = self.main_window.window.winfo_y()
-        main_window_width = self.main_window.window.winfo_width()
-        main_window_height = self.main_window.window.winfo_height()
-        width = self.window.winfo_width()
-        height = self.window.winfo_height()
-        x = main_window_x + (main_window_width // 2) - (width // 2)
-        y = main_window_y + (main_window_height // 2) - (height // 2)
-        self.window.geometry(f"{width}x{height}+{x}+{y}")
         self.window.resizable(False, False)
-        self.window.deiconify()
+        center_dialog(self.window, self.main_window.window)
         self.window.focus_force()
         self.window.grab_set()
 
@@ -1924,18 +1883,8 @@ class WorkspaceSettingsWindow:
     def show(self):
         self.load_config_values(self.main_window.config)
         self.window.withdraw()
-        self.window.update()
-        main_window_x = self.main_window.window.winfo_x()
-        main_window_y = self.main_window.window.winfo_y()
-        main_window_width = self.main_window.window.winfo_width()
-        main_window_height = self.main_window.window.winfo_height()
-        width = self.window.winfo_width()
-        height = self.window.winfo_height()
-        x = main_window_x + (main_window_width // 2) - (width // 2)
-        y = main_window_y + (main_window_height // 2) - (height // 2)
-        self.window.geometry(f"{width}x{height}+{x}+{y}")
         self.window.resizable(False, False)
-        self.window.deiconify()
+        center_dialog(self.window, self.main_window.window)
         self.window.focus_force()
         self.window.grab_set()
 

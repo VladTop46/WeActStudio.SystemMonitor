@@ -62,7 +62,8 @@ def show_messagebox(message, title="", delay=3000):
 
         root.resizable(False, False)
         root.attributes('-topmost', True)
-        root.attributes("-toolwindow", True)
+        if platform.system() == "Windows":
+            root.attributes("-toolwindow", True)
 
         label = tk.Label(root, text=message, anchor="w")
         label.grid(row=1, column=0, padx=5, pady=10, sticky="w")
@@ -259,10 +260,9 @@ class run:
 
     @classmethod
     def get_executable_name(cls):
-        if sys.platform == 'win32':
-            exec_name = f"{cls.python_name}.exe"
-        else:
-            exec_name = cls.python_name
+        if sys.platform != 'win32':
+            return sys.executable
+        exec_name = f"{cls.python_name}.exe"
         python_cmd = cls.grandparent_dir / "Python" / exec_name
         if not python_cmd.exists():
             print(f"[Info] {python_cmd} not found. Using python.exe")
@@ -273,37 +273,37 @@ class run:
     def main(cls):
         exec_name = cls.get_executable_name()
         main_py = cls.grandparent_dir / "main.py"
-        return subprocess.Popen([exec_name, str(main_py)], shell=True)
+        return subprocess.Popen([str(exec_name), str(main_py)])
 
     @classmethod
     def configure(cls):
         exec_name = cls.get_executable_name()
         configure_py = cls.grandparent_dir / "configure.py"
-        return subprocess.Popen([exec_name, str(configure_py)], shell=True)
+        return subprocess.Popen([str(exec_name), str(configure_py)])
     
     @classmethod
     def weact_device_setting(cls,type=0):
         exec_name = cls.get_executable_name()
         weact_device_setting_py = cls.grandparent_dir / "weact_device_setting.py"
-        return subprocess.Popen([exec_name, str(weact_device_setting_py),f"{type}"], shell=True)
+        return subprocess.Popen([str(exec_name), str(weact_device_setting_py), str(type)])
     
     @classmethod
     def theme_editor(cls,theme_name):
         exec_name = cls.get_executable_name()
         theme_editor_py = cls.grandparent_dir / "theme-editor.py"
-        return subprocess.Popen([exec_name, str(theme_editor_py),f"\"{theme_name}\""], shell=True)
+        return subprocess.Popen([str(exec_name), str(theme_editor_py), str(theme_name)])
     
     @classmethod
     def image_scaler_tool(cls):
         exec_name = cls.get_executable_name()
         image_scaler_tool_py = cls.grandparent_dir / "image_scaler_tool.py"
-        return subprocess.Popen([exec_name, str(image_scaler_tool_py)], shell=True)
+        return subprocess.Popen([str(exec_name), str(image_scaler_tool_py)])
     
     @classmethod
     def image_gif2png_scaler_tool(cls):
         exec_name = cls.get_executable_name()
         image_gif2png_scaler_tool_py = cls.grandparent_dir / "image_gif2png_scaler_tool.py"
-        return subprocess.Popen([exec_name, str(image_gif2png_scaler_tool_py)], shell=True)
+        return subprocess.Popen([str(exec_name), str(image_gif2png_scaler_tool_py)])
     
 def get_version():
     version_file = Path(__file__).parent.parent / "version"

@@ -96,3 +96,68 @@ class ExampleCustomTextOnlyData(CustomDataSource):
     def last_values(self) -> List[float]:
         # If a custom data class only has text values, it won't be possible to display line graph
         pass
+
+import subprocess
+import json
+
+def _rocm_smi_data() -> dict:
+    try:
+        result = subprocess.run(
+            ["rocm-smi", "--showtemp", "--showuse", "--showpower", "--json"],
+            capture_output=True, text=True, timeout=3
+        )
+        # rocm-smi пишет WARNING в stdout перед JSON, берём только последнюю строку
+        json_line = [l for l in result.stdout.strip().splitlines() if l.startswith("{")]
+        if json_line:
+            return list(json.loads(json_line[0]).values())[0]
+    except Exception:
+        pass
+    return {}
+
+
+class AmdGpuTemperature(CustomDataSource):
+    last_val = [math.nan] * 10
+
+    def as_numeric(self) -> float:
+        self.value = float(_rocm_smi_data().get("Temperature (Sensor edge) (C)", math.nan))
+        self.last_val.append(self.value)
+        self.last_val.pop(0)
+        return self.value
+
+    def as_string(self) -> str:
+        return f'{self.value:.0f}°C'
+
+    def last_values(self) -> List[float]:
+        return self.last_val
+
+
+class AmdGpuLoad(CustomDataSource):
+    last_val = [math.nan] * 10
+
+    def as_numeric(self) -> float:
+        self.value = float(_rocm_smi_data().get("GPU use (%)", math.nan))
+        self.last_val.append(self.value)
+        self.last_val.pop(0)
+        return self.value
+
+    def as_string(self) -> str:
+        return f'{self.value:.0f}%'
+
+    def last_values(self) -> List[float]:
+        return self.last_val
+
+
+class AmdGpuPower(CustomDataSource):
+    last_val = [math.nan] * 10
+
+    def as_numeric(self) -> float:
+        self.value = float(_rocm_smi_data().get("Average Graphics Package Power (W)", math.nan))
+        self.last_val.append(self.value)
+        self.last_val.pop(0)
+        return self.value
+
+    def as_string(self) -> str:
+        return f'{self.value:.0f}W'
+
+    def last_values(self) -> List[float]:
+        return self.last_val
